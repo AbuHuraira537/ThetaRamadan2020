@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThetaRamadan2020", "ThetaRamadan2020\ThetaRamadan2020.csproj", "{8FF3614E-C9E2-4174-9D33-230F5FE278EC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8FF3614E-C9E2-4174-9D33-230F5FE278EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FF3614E-C9E2-4174-9D33-230F5FE278EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FF3614E-C9E2-4174-9D33-230F5FE278EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FF3614E-C9E2-4174-9D33-230F5FE278EC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4EA10745-A1D5-48D4-BCA5-D4C202DECAB8}
+	EndGlobalSection
+EndGlobal
