@@ -43,11 +43,70 @@
         </form>
     </div>
 </div>
-
+<div>
+    <h2 id="send" name="send">SavveDataAjax</h2>
+    @*  <h3 id="send1">send1</h3>*@
+</div>
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+
+    //$("#send1").click(function () {
+    //    $.ajax({
+    //        url: "/Users/adduser",
+    //        type: "POST",
+    //        data:
+    //        {
+    //            name: $("#Name").val()
+    //        },
+    //        success: function (v) {
+    //            alert(v);
+    //        },
+    //        error: function (e) {
+    //            alert(e);
+    //        }
+
+
+
+    //    });
+
+
+    //})
+
+
+
+
+    $("#send").click(function () {
+        
+        var user = { name: $("#Name").val(), email: $("#Email").val(), password: $("#Password").val(), userrole: $("#UserRole").val(), password: $("#Password").val(), mobile: $("#Mobile").val(), saledItems: [] };
+        user=JSON.stringify(user);
+        $.ajax({
+            beforeSend: function() { alert("sending"); },
+            url: 'https://localhost:44391/api/Users1',
+            type: "POST",
+            dataType: "json",
+            data: user,
+            contentType:"application/json",
+            success: function (h)
+            {
+                alert("sucess");
+                document.location = "/users/index";
+            },
+            error: function (error) {
+                alert("err");
+            }
+
+
+
+        });
+      //  jQuery.post("http://localhost:50476/api/Users1", obj, function () { alert(obj) }, "json");
+    })
+</script>
+
+
 }

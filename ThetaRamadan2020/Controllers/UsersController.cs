@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ThetaRamadan2020.Models;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace ThetaRamadan2020.Controllers
 {
@@ -38,6 +39,7 @@ namespace ThetaRamadan2020.Controllers
 
                 }
             }
+        
 
             return View(users);
         }
@@ -165,5 +167,117 @@ namespace ThetaRamadan2020.Controllers
         {
             return _context.Users.Any(e => e.Id == id);
         }
+        //public IActionResult adduser(string name)
+        //{
+
+
+        //    try
+        //    {
+        //        Users user = new Users();
+        //        user.Name = name;
+        //        user.Password = "134";
+        //        user.Mobile = "34345434534";
+        //        user.UserRole = "customer";
+        //        _context.Users.Add(user);
+        //        _context.SaveChanges();
+        //        return View(nameof(Index));
+
+        //    }
+        //    catch (Exception e)
+        //    { 
+        //        return View(nameof(Index));
+        //    }
+
+        //}
+       
+        public async Task<IActionResult> ForgetPassword(string mob, string email)
+        {
+               Users p = await _context.Users.Where(p => p.Mobile == mob && p.Email == email).FirstOrDefaultAsync();
+                if (p != null)
+            {
+                try
+                {
+                    Mail mail = new Mail();
+                    mail.desc = p.Password;
+                    if(!mail.sendmail(email))
+                    {
+                        ViewBag.er = "Some thing error occure";
+                        return View();
+                    }
+                    ViewBag.sucess = "Mail sent to your provided email";
+                    return View();
+                }
+                catch (Exception e)
+                {
+                    ViewBag.er = e.Message;
+                    return View();
+                }
+            }
+            ViewBag.er = "Recovery Email or Mobile is invalid";
+            return View();
+        }
+        public async Task<string> RegisterCustomer(string name,string password,string email,string mobile)
+        {
+            Users user = new Users();
+            user.Name = name;
+            user.Mobile = mobile;
+            user.Password = password;
+            user.UserRole = "Customer";
+            user.Email = email;
+            Validations validate = new Validations();
+           if( validate.PersonValidation(user)!="")
+            {
+                return validate.PersonValidation(user);
+            }
+            string res;
+            StringContent u = new StringContent(JsonConvert.SerializeObject(user),Encoding.UTF8,"application/json");
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44391/");
+                HttpResponseMessage response = await client.PostAsync("api/Users1",u);
+                if (response.IsSuccessStatusCode)
+                {
+                    Mail mail = new Mail();
+                    mail.sendmail(user.Email);
+                   return response.StatusCode.ToString();
+                }
+                
+                res=response.StatusCode.ToString();
+            }
+            return res;   
+        }
+        public async Task<string> RegisterStaffOrAdmin(string name, string password, string email, string mobile,string role)
+        {
+            Users user = new Users();
+            user.Name = name;
+            user.Mobile = mobile;
+            user.Password = password;
+            user.UserRole = role;
+            user.Email = email;
+            Validations validate = new Validations();
+            if (validate.PersonValidation(user) != "")
+            {
+                return validate.PersonValidation(user);
+            }
+            string res;
+            StringContent u = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://localhost:44391/");
+                HttpResponseMessage response = await client.PostAsync("api/Users1", u);
+                if (response.IsSuccessStatusCode)
+                {
+                    Mail mail = new Mail();
+                    mail.sendmail(user.Email);
+                    return response.StatusCode.ToString();
+                }
+
+                res = response.StatusCode.ToString();
+            }
+            return res;
+        }
+
+
+
     }
 }

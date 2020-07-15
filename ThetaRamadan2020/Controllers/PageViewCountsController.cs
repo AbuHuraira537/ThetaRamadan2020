@@ -1,65 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using ThetaRamadan2020.Models;
 
 namespace ThetaRamadan2020.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors("AllowOrigin")]
-    public class Users1Controller : ControllerBase
+    public class PageViewCountsController : ControllerBase
     {
         private readonly thetaramdan2020Context _context;
 
-        public Users1Controller(thetaramdan2020Context context)
+        public PageViewCountsController(thetaramdan2020Context context)
         {
             _context = context;
         }
 
-        // GET: api/Users1
+        // GET: api/PageViewCounts
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Users>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<PageViewCount>>> GetPageViewCount()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.PageViewCount.ToListAsync();
         }
 
-        // GET: api/Users1/5
+        // GET: api/PageViewCounts/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Users>> GetUsers(int id)
+        public async Task<ActionResult<PageViewCount>> GetPageViewCount(int id)
         {
-            var users = await _context.Users.FindAsync(id);
+            var pageViewCount = await _context.PageViewCount.FindAsync(id);
 
-            if (users == null)
+            if (pageViewCount == null)
             {
                 return NotFound();
             }
 
-            return users;
+            return pageViewCount;
         }
-        // PUT: api/Users1/5
+
+        // PUT: api/PageViewCounts/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-
-
-
         [HttpPut("{id}")]
-        [EnableCors("AllowOrigin")]
-        public async Task<IActionResult> PutUsers(int id, Users user)
+        public async Task<IActionResult> PutPageViewCount(int id, PageViewCount pageViewCount)
         {
-            if (id != user.Id)
+            if (id != pageViewCount.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            _context.Entry(pageViewCount).State = EntityState.Modified;
 
             try
             {
@@ -67,7 +60,7 @@ namespace ThetaRamadan2020.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UsersExists(id))
+                if (!PageViewCountExists(id))
                 {
                     return NotFound();
                 }
@@ -80,42 +73,37 @@ namespace ThetaRamadan2020.Controllers
             return NoContent();
         }
 
-        // POST: api/Users1
+        // POST: api/PageViewCounts
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        [EnableCors("AllowOrigin")]
-        public async Task<ActionResult<Users>> PostUsers(Users user)
+        public async Task<ActionResult<PageViewCount>> PostPageViewCount(PageViewCount pageViewCount)
         {
-            //Users user= JsonConvert.DeserializeObject<Users>(users);
-            _context.Users.Add(user);
-           
+            _context.PageViewCount.Add(pageViewCount);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUsers", new { id = user.Id }, user);
-        
-            }
+            return CreatedAtAction("GetPageViewCount", new { id = pageViewCount.Id }, pageViewCount);
+        }
 
-
-        // DELETE: api/Users1/5
+        // DELETE: api/PageViewCounts/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Users>> DeleteUsers(int id)
+        public async Task<ActionResult<PageViewCount>> DeletePageViewCount(int id)
         {
-            var users = await _context.Users.FindAsync(id);
-            if (users == null)
+            var pageViewCount = await _context.PageViewCount.FindAsync(id);
+            if (pageViewCount == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(users);
+            _context.PageViewCount.Remove(pageViewCount);
             await _context.SaveChangesAsync();
 
-            return users;
+            return pageViewCount;
         }
 
-        private bool UsersExists(int id)
+        private bool PageViewCountExists(int id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.PageViewCount.Any(e => e.Id == id);
         }
     }
 }

@@ -44,11 +44,52 @@
         </form>
     </div>
 </div>
-
+<div>
+    <p id="send">send</p>
+</div>
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        
+        
+        
+        
+        
+        
+        
+        }
+
+
+<script>
+
+    $("#send").click(function () {
+
+        var user = { id: $("#Id").val(), name: $("#Name").val(), email: $("#Email").val(), password: $("#Password").val(), userrole: $("#UserRole").val(),mobile: $("#Mobile").val(), saledItems: [] };
+        user = JSON.stringify(user);
+        var id1 = $("#Id").val();
+        $.ajax({
+            beforeSend: function () { alert(user); },
+            type: "PUT",
+            url: 'https://localhost:44391/api/Users1/'+id1,
+            dataType: "json",
+            data:user,
+            contentType: "application/json",
+            success: function (h) {
+                alert("sucess");
+                document.location = "/users/index";
+            },
+            error: function (error) {
+                alert("err");
+            }
+
+        });
+
+        });
+
+</script>
+
+
 }

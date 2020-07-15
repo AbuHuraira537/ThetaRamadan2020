@@ -13,6 +13,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ThetaRamadan2020.Models;
+using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.Options;
 
 namespace ThetaRamadan2020
 {
@@ -37,8 +41,28 @@ namespace ThetaRamadan2020
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
+            //services.AddControllersWithViews().AddNewtonsoftJson();
             services.AddRazorPages();
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            });
         }
+        //private static NewtonsoftJsonPatchInputFormatter GetJsonPatchInputFormatter()
+        //{
+        //    var builder = new ServiceCollection()
+        //        .AddLogging()
+        //        .AddMvc()
+        //        .AddNewtonsoftJson()
+        //        .Services.BuildServiceProvider();
+
+        //    return builder
+        //        .GetRequiredService<IOptions<MvcOptions>>()
+        //        .Value
+        //        .InputFormatters
+        //        .OfType<NewtonsoftJsonPatchInputFormatter>()
+        //        .First();
+        //}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -61,6 +85,7 @@ namespace ThetaRamadan2020
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseCors(options => options.AllowAnyOrigin());
 
             app.UseEndpoints(endpoints =>
             {
